@@ -1,0 +1,25 @@
+- set_fact:    
+    local_composer_json: "/tmp/external/{{ ansible_user }}_{{ inventory_hostname }}"
+
+- fetch:
+    src: "{{ composer_json_path }}/composer.json"
+    dest: "{{ local_composer_json }}/composer.json"
+    flat: true 
+  register: composer_json_downloaded
+  
+- name: Removing existing composer.lock
+  file:
+    path: "{{ local_composer_json }}/composer.lock"
+    state: absent
+  when: composer_json_downloaded.changed
+
+- name: run composer.phar update
+  shell: /usr/bin/php7.1 {{ composer_bin }} update -d {{ local_composer_json }}
+  delegate_to: localhost
+  when: composer_json_downloaded.changed
+     
+- name: copy composer.lock to remote host
+  copy:
+    src: "{{ local_composer_json }}/composer.lock"
+    dest: "{{ composer_json_path }}/composer.lock"
+  when: composer_json_downloaded.changed

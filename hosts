@@ -1,0 +1,7 @@
+all:
+    hosts:
+        localhost:
+            ansible_user: stefan
+            ansible_connection: ssh
+            composer_json_path: ~/htdocs
+    

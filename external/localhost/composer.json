@@ -1,0 +1,10 @@
+{
+    "name": "stefan/htdocs",
+    "authors": [
+        {
+            "name": "Stefan Lindecke",
+            "email": "lindesbs@github.com"
+        }
+    ],
+    "require": {}
+}
